@@ -119,16 +119,19 @@ print(classification_report(testY.argmax(axis=1),
 print("[INFO] serializing network to '{}'...".format(args["model"]))
 model.save(args["model"])
 model.save_weights('./weights/livenessnet_weights.h5')
-json_strig = model.to_json()
-print("json_strig: ", json_strig)
+
+# print model info as json/yaml
+# json_strig = model.to_json()
+# print("json_strig: ", json_strig)
 # yaml_string = model.to_yaml()
 # print("yaml_string: ", yaml_string)
 
-layer_name = 'dense_2'
-intermediate_layer_model = Model(inputs=model.input,
-                                    outputs=model.get_layer(layer_name).output)
-intermediate_output = intermediate_layer_model.predict(testX, batch_size=BS)
-print("intermediate_output: --------> ", intermediate_output)
+# output intermediate layer model result
+# layer_name = 'dense_2'
+# intermediate_layer_model = Model(inputs=model.input,
+#                                     outputs=model.get_layer(layer_name).output)
+# intermediate_output = intermediate_layer_model.predict(testX, batch_size=BS)
+# print("intermediate_output: --------> ", intermediate_output)
 
 # save the label encoder to disk
 f = open(args["le"], "wb")
