@@ -87,7 +87,7 @@ print("[INFO] compiling model...")
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
 model = LivenessNet.build(width=32, height=32, depth=3,
 	classes=len(le.classes_))
-model = multi_gpu_model(model, gpus=4)
+#model = multi_gpu_model(model, gpus=4)
 model.compile(loss="binary_crossentropy", optimizer=opt,
 	metrics=["accuracy"])
 
@@ -118,8 +118,8 @@ model.save(args["model"])
 model.save_weights('./weights/livenessnet_weights.h5')
 #json_strig = model.to_json()
 #print("json_strig: ", json_strig)
-yaml_string = model.to_yaml()
-print("yaml_string: ", yaml_string)
+#yaml_string = model.to_yaml()
+#print("yaml_string: ", yaml_string)
 
 
 
