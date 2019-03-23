@@ -24,7 +24,6 @@ import os
 import tensorflow as tf
 from keras import backend as K
 import keras
-from tensorflow.python.framework import graph_util
 from keras.models import Model
 # from keras.utils import multi_gpu_model
 
@@ -143,12 +142,12 @@ print("input is: ", model.input.op.name)
 print("output is: ", model.output.op.name)
 # save pb model
 sess = K.get_session()
-frozen_graph_def = graph_util.convert_variables_to_constants(
+frozen_graph_def = tf.graph_util.convert_variables_to_constants(
     sess,
     sess.graph_def,
     output_node_names=["activation_6/Softmax"])
 with tf.gfile.GFile('./model/livenessnet_model.pb', "wb") as f:
-    f.write(frozen_graph_def.SerializeToString)
+    f.write(frozen_graph_def.SerializeToString())
 # tf.train.write_graph(frozen_graph_def, 'model', 'livenessnet_model.pb', as_text=True)
 # tf.train.write_graph(frozen_graph_def, 'model', 'livenessnet_model.pb', as_text=False)
 
