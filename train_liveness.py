@@ -124,11 +124,11 @@ print("json_strig: ", json_strig)
 # yaml_string = model.to_yaml()
 # print("yaml_string: ", yaml_string)
 
-# layer_name = 'dense_2'
-# intermediate_layer_model = keras.models(inputs=model.input,
-#                                         outputs=model.get_layer(layer_name).output)
-# intermediate_output = intermediate_layer_model.predict(data)
-# print("intermediate_output: --------> ", intermediate_output)
+layer_name = 'dense_2'
+intermediate_layer_model = keras.models(inputs=model.input,
+                                        outputs=model.get_layer(layer_name))
+intermediate_output = intermediate_layer_model.predict(testX, batch_size=BS)
+print("intermediate_output: --------> ", intermediate_output)
 
 # save the label encoder to disk
 f = open(args["le"], "wb")
