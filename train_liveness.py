@@ -24,7 +24,7 @@ import os
 import tensorflow as tf
 from keras import backend as K
 import keras
-# from keras.models import Model
+from keras.models import Model
 # from keras.utils import multi_gpu_model
 
 # construct the argument parser and parse the arguments
@@ -125,8 +125,8 @@ print("json_strig: ", json_strig)
 # print("yaml_string: ", yaml_string)
 
 layer_name = 'dense_2'
-intermediate_layer_model = keras.models(inputs=model.input,
-                                        outputs=model.get_layer(layer_name))
+intermediate_layer_model = Model(inputs=model.input,
+                                    outputs=model.get_layer(layer_name).output)
 intermediate_output = intermediate_layer_model.predict(testX, batch_size=BS)
 print("intermediate_output: --------> ", intermediate_output)
 
