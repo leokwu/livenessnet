@@ -24,6 +24,7 @@ import os
 import tensorflow as tf
 from keras import backend as K
 import keras
+from tensorflow.python.framework import graph_util
 from keras.models import Model
 # from keras.utils import multi_gpu_model
 
@@ -93,7 +94,7 @@ model = LivenessNet.build(width=32, height=32, depth=3,
 model.compile(loss="binary_crossentropy", optimizer=opt,
               metrics=["accuracy"])
 
-callbacks = [keras.callbacks.TensorBoard(log_dir='./logs', update_freq='batch'),
+callbacks = [keras.callbacks.TensorBoard(log_dir='./logs', update_freq='epoch'),
              keras.callbacks.ModelCheckpoint(filepath='./checkpoints/livenessnet.{epoch:02d}.hdf5',
                                              verbose=0, save_best_only=False, save_weights_only=False, mode='auto',
                                              period=1)
@@ -142,12 +143,14 @@ print("input is: ", model.input.op.name)
 print("output is: ", model.output.op.name)
 # save pb model
 sess = K.get_session()
-frozen_graph_def = tf.graph_util.convert_variables_to_constants(
+frozen_graph_def = graph_util.convert_variables_to_constants(
     sess,
     sess.graph_def,
     output_node_names=["activation_6/Softmax"])
+with tf.gfile.GFile('./model/livenessnet_model.pb', "wb") as f:
+    f.write(frozen_graph_def.SerializeToString)
 # tf.train.write_graph(frozen_graph_def, 'model', 'livenessnet_model.pb', as_text=True)
-tf.train.write_graph(frozen_graph_def, 'model', 'livenessnet_model.pb', as_text=False)
+# tf.train.write_graph(frozen_graph_def, 'model', 'livenessnet_model.pb', as_text=False)
 
 # Training set accuracy--------------------------------
 result = model.evaluate(trainX, trainY, batch_size=10)
