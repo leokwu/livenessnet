@@ -22,7 +22,7 @@ import cv2
 import os
 import tensorflow as tf
 from keras import backend as K
-import keras
+import tensorflow.keras as keras
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -90,7 +90,7 @@ model.compile(loss="binary_crossentropy", optimizer=opt,
 	metrics=["accuracy"])
 
 callbacks = [keras.callbacks.TensorBoard(log_dir='./logs', update_freq='batch'),
-            keras.callbacks.ModelCheckpoint(filepath='./checkpoints/weights.{epoch:02d}.hdf5', 
+            keras.callbacks.ModelCheckpoint(filepath='./checkpoints/livenessnet.{epoch:02d}.hdf5',
                 verbose=0, save_best_only=False, save_weights_only=False, mode='auto', period=1)
         ]
 # train the network
@@ -99,7 +99,7 @@ print("[INFO] training network for {} epochs...".format(EPOCHS))
 H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
 	validation_data=(testX, testY), 
         steps_per_epoch=len(trainX) // BS,
-	epochs=EPOCHS, 
+		epochs=EPOCHS,
         workers=10, 
         use_multiprocessing=True,
         callbacks=callbacks)
@@ -113,6 +113,8 @@ print(classification_report(testY.argmax(axis=1),
 # save the network to disk
 print("[INFO] serializing network to '{}'...".format(args["model"]))
 model.save(args["model"])
+json_strig = model.to_json()
+print("json_strig: ", json_strig)
 
 # save the label encoder to disk
 f = open(args["le"], "wb")
