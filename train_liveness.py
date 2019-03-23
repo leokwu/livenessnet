@@ -22,7 +22,8 @@ import cv2
 import os
 import tensorflow as tf
 from keras import backend as K
-import tensorflow.keras as keras
+import keras
+from keras.utils import multi_gpu_model
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
@@ -86,6 +87,7 @@ print("[INFO] compiling model...")
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
 model = LivenessNet.build(width=32, height=32, depth=3,
 	classes=len(le.classes_))
+model = multi_gpu_model(model, gpus=4)
 model.compile(loss="binary_crossentropy", optimizer=opt,
 	metrics=["accuracy"])
 
@@ -113,8 +115,13 @@ print(classification_report(testY.argmax(axis=1),
 # save the network to disk
 print("[INFO] serializing network to '{}'...".format(args["model"]))
 model.save(args["model"])
-json_strig = model.to_json()
-print("json_strig: ", json_strig)
+model.save_weights('./weights/livenessnet_weights.h5')
+#json_strig = model.to_json()
+#print("json_strig: ", json_strig)
+yaml_string = model.to_yaml()
+print("yaml_string: ", yaml_string)
+
+
 
 # save the label encoder to disk
 f = open(args["le"], "wb")
