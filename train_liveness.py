@@ -148,6 +148,8 @@ frozen_graph_def = tf.graph_util.convert_variables_to_constants(
     output_node_names=["activation_6/Softmax"])
 with tf.gfile.GFile('./model/livenessnet_model.pb', "wb") as f:
     f.write(frozen_graph_def.SerializeToString())
+print("tf input op: ", tf.get_default_graph().as_graph_def().input.op.name)
+print("tf output op: ", tf.get_default_graph().as_graph_def().output.op.name)
 # tf.train.write_graph(frozen_graph_def, 'model', 'livenessnet_model.pb', as_text=True)
 # tf.train.write_graph(frozen_graph_def, 'model', 'livenessnet_model.pb', as_text=False)
 
