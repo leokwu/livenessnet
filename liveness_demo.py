@@ -1,5 +1,5 @@
 # USAGE
-# python liveness_demo.py --model liveness.model --le le.pickle --detector face_detector
+# python3.6 liveness_demo.py --model liveness.model --le le.pickle --detector face_detector
 
 # import the necessary packages
 from imutils.video import VideoStream
