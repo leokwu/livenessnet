@@ -1,6 +1,6 @@
 # USAGE
-# python gather_examples.py --input videos/real.mov --output dataset/real --detector face_detector --skip 1
-# python gather_examples.py --input videos/fake.mp4 --output dataset/fake --detector face_detector --skip 4
+# python3.6 gather_examples.py --input videos/real.mov --output dataset/real --detector face_detector --skip 1
+# python3.6 gather_examples.py --input videos/fake.mp4 --output dataset/fake --detector face_detector --skip 4
 
 # import the necessary packages
 import numpy as np
