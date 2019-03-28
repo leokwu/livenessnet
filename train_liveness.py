@@ -50,6 +50,7 @@ EPOCHS = 1
 # the list of data (i.e., images) and class images
 print("[INFO] loading images...")
 imagePaths = list(paths.list_images(args["dataset"]))
+#print("imagePaths: ", imagePaths)
 data = []
 labels = []
 
@@ -57,6 +58,9 @@ for imagePath in imagePaths:
     # extract the class label from the filename, load the image and
     # resize it to be a fixed 32x32 pixels, ignoring aspect ratio
     label = imagePath.split(os.path.sep)[-2]
+    # print(": ", imagePath.split(os.path.sep)[1])
+    # print("os.path.sep: ", os.path.sep)
+    # print("label: ", label)
     image = cv2.imread(imagePath)
     image = cv2.resize(image, (32, 32))
 
@@ -119,7 +123,7 @@ print(classification_report(testY.argmax(axis=1),
 print("[INFO] serializing network to '{}'...".format(args["model"]))
 model.save(args["model"])
 model.save_weights('./weights/livenessnet_weights.h5')
-
+#model.load_weights('./weights/livenessnet_weights.h5')
 # print model info as json/yaml
 # json_strig = model.to_json()
 # print("json_strig: ", json_strig)
