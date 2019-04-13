@@ -8,6 +8,7 @@ matplotlib.use("Agg")
 
 # import the necessary packages
 from pyimagesearch.livenessnet import LivenessNet
+from net.audioappraisenet import AudioAppraiseNet
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
@@ -91,8 +92,11 @@ aug = ImageDataGenerator(rotation_range=20, zoom_range=0.15,
 # initialize the optimizer and model
 print("[INFO] compiling model...")
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
-model = LivenessNet.build(width=32, height=32, depth=3,
-                          classes=len(le.classes_))
+# model = LivenessNet.build(width=32, height=32, depth=3,
+#                          classes=len(le.classes_))
+# mobilenetv2
+model = AudioAppraiseNet.build_mobilenetv2(width=128, height=128, depth=3,
+                           classes=len(le.classes_), reg=l2(0.0004))
 # model = multi_gpu_model(model, gpus=4)
 model.compile(loss="binary_crossentropy", optimizer=opt,
               metrics=["accuracy"])
@@ -145,13 +149,13 @@ f.close()
 print("input is: ", model.input.op.name)
 print("output is: ", model.output.op.name)
 # save pb model
-sess = K.get_session()
-frozen_graph_def = tf.graph_util.convert_variables_to_constants(
-    sess,
-    sess.graph_def,
-    output_node_names=["activation_6/Softmax"])
-with tf.gfile.GFile('./model/livenessnet_model.pb', "wb") as f:
-    f.write(frozen_graph_def.SerializeToString())
+# sess = K.get_session()
+# frozen_graph_def = tf.graph_util.convert_variables_to_constants(
+#     sess,
+#     sess.graph_def,
+#    output_node_names=["activation_6/Softmax"])
+# with tf.gfile.GFile('./model/livenessnet_model.pb', "wb") as f:
+#    f.write(frozen_graph_def.SerializeToString())
 # tf.train.write_graph(frozen_graph_def, 'model', 'livenessnet_model.pb', as_text=True)
 # tf.train.write_graph(frozen_graph_def, 'model', 'livenessnet_model.pb', as_text=False)
 
